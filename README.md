@@ -1,57 +1,64 @@
-# Project Name
+---
+services: storage
+platforms: php
+author: roygara
+---
 
-(short, 1-3 sentenced, description of the project)
+# Transfer objects to and from Azure Blob storage using PHP
 
-## Features
+This repository contains a simple sample project to help you getting started with Azure storage using .NET as the development language.
 
-This project framework provides the following features:
+## Prerequisites
 
-* Feature 1
-* Feature 2
-* ...
+To complete this tutorial:
 
-## Getting Started
+To complete this quickstart: 
+* Install [PHP](http://php.net/downloads.php)
+* Install [The Azure SDK for PHP](../../php-download-sdk.md)
 
-### Prerequisites
+If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/?WT.mc_id=A261C142F) before you begin.
 
-(ideally very short, if any)
+## Create a storage account using the Azure portal
 
-- OS
-- Library version
-- ...
+First, create a new general-purpose storage account to use for this quickstart. 
 
-### Installation
+1. Go to the [Azure portal](https://portal.azure.com/#create/Microsoft.StorageAccount-ARM) and log in using your Azure account. 
+2. Enter a unique name for your storage account. Keep these rules in mind for naming your storage account:
+    - The name must be between 3 and 24 characters in length.
+    - The name may contain numbers and lowercase letters only.
+3. Make sure that the following default values are set: 
+    - **Deployment model** is set to **Resource manager**.
+    - **Account kind** is set to **General purpose**.
+    - **Performance** is set to **Standard**.
+    - **Replication** is set to **Locally Redundant storage (LRS)**.
+4. Select your subscription. 
+5. For **Resource group**, create a new one and give it a unique name. 
+6. Select the **Location** to use for your storage account.
+7. Check **Pin to dashboard** and click **Create** to create your storage account. 
 
-(ideally very short)
+After your storage account is created, it is pinned to the dashboard. Click on it to open it. Under **Settings**, click **Access keys**. Select the primary key and copy the associated **Connection string** to the clipboard, then paste it into a text editor for later use.
 
-- npm install [package name]
-- mvn install
-- ...
+## Put the connection string in an environment variable
 
-### Quickstart
-(Add steps to get up and running quickly)
+This solution requires a connection string be stored in an environment variable securely on the machine running the sample. Follow one of the examples below depending on your Operating System to create the environment variable. If using windows close out of your open IDE or shell and restart it to be able to read the environment variable.
 
-1. git clone [repository clone url]
-2. cd [respository name]
-3. ...
+### Linux
 
+```bash
+export storageconnectionstring="<yourconnectionstring>"
+```
+### Windows
 
-## Demo
+```cmd
+setx storageconnectionstring "<yourconnectionstring>"
+```
 
-A demo app is included to show how to use the project.
+At this point, you can run this application. It creates its own file to upload and download, and then cleans up after itself by deleting everything at the end.
 
-To run the demo, follow these steps:
+## More information
 
-(Add steps to start up the demo)
+The [Azure storage documentation](https://docs.microsoft.com/azure/storage/) includes a rich set of tutorials and conceptual articles, which serve as a good complement to the samples.
 
-1.
-2.
-3.
-
-## Resources
-
-(Any additional resources or related projects)
-
-- Link to supporting information
-- Link to similar sample
-- ...
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
+contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
