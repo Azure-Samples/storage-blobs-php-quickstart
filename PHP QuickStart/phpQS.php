@@ -22,6 +22,7 @@
 # Blobs can be accessed from anywhere in the world via HTTP or HTTPS. 
 #
 # Documentation References: 
+#  - Associated Article - https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-php 
 #  - What is a Storage Account - http://azure.microsoft.com/en-us/documentation/articles/storage-whatis-account/ 
 #  - Getting Started with Blobs - https://azure.microsoft.com/en-us/documentation/articles/storage-php-how-to-use-blobs/
 #  - Blob Service Concepts - http://msdn.microsoft.com/en-us/library/dd179376.aspx 
