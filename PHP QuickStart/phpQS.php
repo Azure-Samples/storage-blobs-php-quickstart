@@ -27,7 +27,7 @@
 #  - Getting Started with Blobs - https://azure.microsoft.com/en-us/documentation/articles/storage-php-how-to-use-blobs/
 #  - Blob Service Concepts - http://msdn.microsoft.com/en-us/library/dd179376.aspx 
 #  - Blob Service REST API - http://msdn.microsoft.com/en-us/library/dd135733.aspx 
-#  - Blob Service PHP API - https://github.com/Azure/azure-sdk-for-php/
+#  - Blob Service PHP API - https://github.com/Azure/azure-storage-php
 #  - Storage Emulator - http://azure.microsoft.com/en-us/documentation/articles/storage-use-emulator/ 
 #
 **/
@@ -74,44 +74,41 @@ if (!isset($_GET["Cleanup"])) {
 
     $containerName = "blockblobs".generateRandomString();
 
-    try    {
+    try {
         // Create container.
         $blobClient->createContainer($containerName, $createContainerOptions);
 
+        // Creating a local file so that we can upload it to Azure
+        $myfile = fopen("HelloWorld.txt", "w") or die("Unable to open file!");
+        $txt = "Hello Azure!";
+        fwrite($myfile, $txt);
+        fclose($myfile);
 
-    //$content = fopen("c:\myfile.txt", "r");
-    //$blob_name = "myblob";
+        # Upload file as a block blob
+        echo "Uploading BlockBlob: ".PHP_EOL;
+        echo $fileToUpload;
+        echo "<br />";
+        
+        $content = fopen($fileToUpload, "r");
 
-    $myfile = fopen("HelloWorld.txt", "w") or die("Unable to open file!");
-    $txt = "Hello Azure!";
-    fwrite($myfile, $txt);
-    fclose($myfile);
+        //Upload blob
+        $blobClient->createBlockBlob($containerName, $fileToUpload, $content);
 
-    # Upload file as a block blob
-    echo "Uploading BlockBlob: ".PHP_EOL;
-    echo $fileToUpload;
-    echo "<br />";
-    
-    $content = fopen($fileToUpload, "r");
+        // List blobs.
+        $blob_list = $blobClient->listBlobs($containerName);
+        $blobs = $blob_list->getBlobs();
+        echo "These are the blobs present in the container: ";
+        foreach($blobs as $blob)
+        {
+            echo $blob->getName().": ".$blob->getUrl()."<br />";
+        }
+        echo "<br />";
 
-    //Upload blob
-    $blobClient->createBlockBlob($containerName, $fileToUpload, $content);
-
-    // List blobs.
-    $blob_list = $blobClient->listBlobs($containerName);
-    $blobs = $blob_list->getBlobs();
-    echo "These are the blobs present in the container: ";
-    foreach($blobs as $blob)
-    {
-        echo $blob->getName().": ".$blob->getUrl()."<br />";
-    }
-    echo "<br />";
-
-    // Get blob.
-    echo "This is the content of the blob uploaded: ";
-    $blob = $blobClient->getBlob($containerName, $fileToUpload);
-    fpassthru($blob->getContentStream());
-    echo "<br />";
+        // Get blob.
+        echo "This is the content of the blob uploaded: ";
+        $blob = $blobClient->getBlob($containerName, $fileToUpload);
+        fpassthru($blob->getContentStream());
+        echo "<br />";
     }
     catch(ServiceException $e){
         // Handle exception based on error codes and messages.
