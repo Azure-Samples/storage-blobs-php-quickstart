@@ -48,7 +48,6 @@ $blobClient = BlobRestProxy::createBlobService($connectionString);
 $fileToUpload = "HelloWorld.txt";
 
 if (!isset($_GET["Cleanup"])) {
-    // OPTIONAL: Set public access policy and metadata.
     // Create container options object.
     $createContainerOptions = new CreateContainerOptions();
 
@@ -128,15 +127,9 @@ if (!isset($_GET["Cleanup"])) {
     }
 } 
 else 
-    {
+{
 
     try    {
-        // Delete blob.
-        echo "Deleting Blob".PHP_EOL;
-        echo $fileToUpload;
-        echo "<br />";
-        $blobClient->deleteBlob($_GET["containerName"], $fileToUpload);
-
         // Delete container.
         echo "Deleting Container".PHP_EOL;
         echo $_GET["containerName"].PHP_EOL;
