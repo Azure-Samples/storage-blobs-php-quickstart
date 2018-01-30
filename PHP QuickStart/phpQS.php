@@ -79,7 +79,7 @@ if (!isset($_GET["Cleanup"])) {
         $blobClient->createContainer($containerName, $createContainerOptions);
 
         // Creating a local file so that we can upload it to Azure
-        $myfile = fopen("HelloWorld.txt", "w") or die("Unable to open file!");
+        $myfile = fopen($fileToUpload, "w") or die("Unable to open file!");
         $txt = "Hello Azure!";
         fwrite($myfile, $txt);
         fclose($myfile);
@@ -142,7 +142,7 @@ if (!isset($_GET["Cleanup"])) {
 else 
 {
 
-    try    {
+    try{
         // Delete container.
         echo "Deleting Container".PHP_EOL;
         echo $_GET["containerName"].PHP_EOL;
@@ -161,6 +161,12 @@ else
         $code = $e->getCode();
         $error_message = $e->getMessage();
         echo $code.": ".$error_message."<br />";
+    }
+    finally{
+        //Deleting local file
+        echo "Deleting file".PHP_EOL;
+        echo "<br />";
+        unlink($fileToUpload);
     }
 
 }
