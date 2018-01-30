@@ -148,11 +148,6 @@ else
         echo $_GET["containerName"].PHP_EOL;
         echo "<br />";
         $blobClient->deleteContainer($_GET["containerName"]);
-
-        //Deleting local file
-        echo "Deleting file".PHP_EOL;
-        echo "<br />";
-        unlink($fileToUpload);
     }
     catch(ServiceException $e){
         // Handle exception based on error codes and messages.
