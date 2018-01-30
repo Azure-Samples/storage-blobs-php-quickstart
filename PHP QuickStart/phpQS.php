@@ -37,6 +37,7 @@ require_once "./random_string.php";
 
 use MicrosoftAzure\Storage\Blob\BlobRestProxy;
 use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
+use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
 use MicrosoftAzure\Storage\Blob\Models\CreateContainerOptions;
 use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
 
@@ -71,7 +72,7 @@ if (!isset($_GET["Cleanup"])) {
     $createContainerOptions->addMetaData("key1", "value1");
     $createContainerOptions->addMetaData("key2", "value2");
 
-    $containerName = "blockblobs".generateRandomString();
+      $containerName = "blockblobs".generateRandomString();
 
     try {
         // Create container.
@@ -94,9 +95,21 @@ if (!isset($_GET["Cleanup"])) {
         $blobClient->createBlockBlob($containerName, $fileToUpload, $content);
 
         // List blobs.
-        $blob_list = $blobClient->listBlobs($containerName);
-        $blobs = $blob_list->getBlobs();
+        $listBlobsOptions = new ListBlobsOptions();
+        $listBlobsOptions->setPrefix("HelloWorld");
+
+        $result = $blobClient->listBlobs($containerName, $listBlobsOptions);
+        $blobs = $result->getBlobs();
         echo "These are the blobs present in the container: ";
+
+
+        while ($result->getContinuationToken()) {
+        $listBlobsOptions->setContinuationToken($result->getContinuationToken());
+        $result = $blobClient->listBlobs("mycontainer", $listBlobsOptions);
+        $blobs = array_merge($blobs, $blob_list->getBlobs());
+        }
+
+        $blob_list = $blobClient->listBlobs($containerName);
         foreach($blobs as $blob)
         {
             echo $blob->getName().": ".$blob->getUrl()."<br />";
