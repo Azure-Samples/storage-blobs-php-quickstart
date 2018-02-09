@@ -98,22 +98,17 @@ if (!isset($_GET["Cleanup"])) {
         $listBlobsOptions = new ListBlobsOptions();
         $listBlobsOptions->setPrefix("HelloWorld");
 
-        $result = $blobClient->listBlobs($containerName, $listBlobsOptions);
-        $blobs = $result->getBlobs();
         echo "These are the blobs present in the container: ";
 
-
-        while ($result->getContinuationToken()) {
-        $listBlobsOptions->setContinuationToken($result->getContinuationToken());
-        $result = $blobClient->listBlobs("mycontainer", $listBlobsOptions);
-        $blobs = array_merge($blobs, $blob_list->getBlobs());
-        }
-
-        $blob_list = $blobClient->listBlobs($containerName);
-        foreach($blobs as $blob)
-        {
-            echo $blob->getName().": ".$blob->getUrl()."<br />";
-        }
+        do{
+            $result = $blobClient->listBlobs($containerName, $listBlobsOptions);
+            foreach ($result->getBlobs() as $blob)
+            {
+                echo $blob->getName().": ".$blob->getUrl()."<br />";
+            }
+        
+            $listBlobsOptions->setContinuationToken($result->getContinuationToken());
+        } while($result->getContinuationToken());
         echo "<br />";
 
         // Get blob.
