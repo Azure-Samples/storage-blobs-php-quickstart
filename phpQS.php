@@ -32,7 +32,7 @@
 #
 **/
 
-require_once 'vendor\autoload.php';
+require_once 'vendor/autoload.php';
 require_once "./random_string.php";
 
 use MicrosoftAzure\Storage\Blob\BlobRestProxy;
@@ -41,7 +41,7 @@ use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
 use MicrosoftAzure\Storage\Blob\Models\CreateContainerOptions;
 use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
 
-$connectionString = "DefaultEndpointsProtocol=https;AccountName=".getenv('account_name').";AccountKey=".getenv('account_key');
+$connectionString = "DefaultEndpointsProtocol=https;AccountName=".getenv('ACCOUNT_NAME').";AccountKey=".getenv('ACCOUNT_KEY');
 
 // Create blob client.
 $blobClient = BlobRestProxy::createBlobService($connectionString);
@@ -78,12 +78,10 @@ if (!isset($_GET["Cleanup"])) {
         // Create container.
         $blobClient->createContainer($containerName, $createContainerOptions);
 
-        // Creating a local file so that we can upload it to Azure
+        // Getting local file so that we can upload it to Azure
         $myfile = fopen($fileToUpload, "w") or die("Unable to open file!");
-        $txt = "Hello Azure!";
-        fwrite($myfile, $txt);
         fclose($myfile);
-
+        
         # Upload file as a block blob
         echo "Uploading BlockBlob: ".PHP_EOL;
         echo $fileToUpload;
@@ -152,13 +150,6 @@ else
         $error_message = $e->getMessage();
         echo $code.": ".$error_message."<br />";
     }
-    finally{
-        //Deleting local file
-        echo "Deleting file".PHP_EOL;
-        echo "<br />";
-        unlink($fileToUpload);
-    }
-
 }
 ?>
 
