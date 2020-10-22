@@ -36,7 +36,7 @@ First, create a new general-purpose storage account to use for this quickstart.
 6. Select the **Location** to use for your storage account.
 7. Check **Pin to dashboard** and click **Create** to create your storage account. 
 
-After your storage account is created, it is pinned to the dashboard. Click on it to open it. Under **Settings**, click **Access keys**. Select the primary key and copy the associated **Connection string** to the clipboard, then paste it into a text editor for later use.
+After your storage account is created, it is pinned to the dashboard. Click on it to open it. Under **Settings**, click **Access keys**. Copy the storage account name and one of the keys to the clipboard, then paste it into a text editor for later use.
 
 ## Put the connection string in an environment variable
 
@@ -45,12 +45,14 @@ This solution requires a connection string be stored in an environment variable 
 ### Linux
 
 ```bash
-export storageconnectionstring="<yourconnectionstring>"
+export ACCOUNT_NAME="<youraccountname>"
+export ACCOUNT_KEY="<youraccountkey>"
 ```
 ### Windows
 
 ```cmd
-setx storageconnectionstring "<yourconnectionstring>"
+setx ACCOUNT_NAME="<youraccountname>"
+setx ACCOUNT_KEY="<youraccountkey>"
 ```
 
 At this point, you can run this application. It creates its own file to upload and download, and then cleans up after itself by deleting everything at the end.
